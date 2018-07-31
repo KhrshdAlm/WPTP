@@ -17,3 +17,16 @@
 using namespace ns3;
 
 NS_LOG_COMPONENT_DEFINE ("WifiPtp");
+
+
+class ptpApplication : public OnOffApplication
+{
+  private:
+  	ptpApplication();
+  	virtual ~ptpApplication();
+
+  public:
+
+  	void SendPacket ();
+  	
+}
