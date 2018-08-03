@@ -126,7 +126,7 @@ void TxCallback (std::string context, Ptr<const Packet> p)
 int main (int argc, char *argv[])
 {
   uint32_t nWifi = 5;
-  bool enablePcap = false;
+  bool enablePcap = true;
   bool enablePcf = true;
   bool withData = true;
   std::string trafficDirection = "upstream";

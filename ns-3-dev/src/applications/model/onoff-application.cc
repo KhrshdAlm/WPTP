@@ -95,6 +95,7 @@ OnOffApplication::GetTypeId (void)
                      MakeTraceSourceAccessor (&OnOffApplication::m_txTraceWithAddresses),
                      "ns3::Packet::TwoAddressTracedCallback")
   ;
+    
   return tid;
 }
 
@@ -187,6 +188,7 @@ void OnOffApplication::StartApplication () // Called at time specified by Start
   // The ConnectionComplete upcall will start timers at that time
   //if (!m_connected) return;
   ScheduleStartEvent ();
+  
 }
 
 void OnOffApplication::StopApplication () // Called at time specified by Stop
@@ -311,6 +313,7 @@ void OnOffApplication::SendPacket ()
   m_lastStartTime = Simulator::Now ();
   m_residualBits = 0;
   ScheduleNextTx ();
+  
 }
 
 

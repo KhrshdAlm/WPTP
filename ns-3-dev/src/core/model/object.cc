@@ -338,7 +338,7 @@ void
 Object::SetTypeId (TypeId tid)
 {
   NS_LOG_FUNCTION (this << tid);
-  NS_ASSERT (Check ());
+  NS_ASSERT (Check ());  
   m_tid = tid;
 }
 

@@ -59,7 +59,7 @@ NS_LOG_COMPONENT_DEFINE ("FifthScriptExample");
 // install in the source node.
 // ===========================================================================
 //
-class MyApp : public Application 
+class MyApp : public OnOffApplication 
 {
 public:
 
@@ -148,6 +148,8 @@ MyApp::SendPacket (void)
     {
       ScheduleTx ();
     }
+
+    NS_LOG_UNCOND("Here we are in send");
 }
 
 void 
