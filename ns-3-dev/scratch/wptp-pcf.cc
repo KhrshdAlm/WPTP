@@ -345,7 +345,7 @@ void WptpApplication::SendPacket ()
   if (InetSocketAddress::IsMatchingType (m_peer))
     {
       NS_LOG_INFO ("At time " << Simulator::Now ().GetSeconds ()
-                   << "s on-off application sent "
+                   << "s wptp application sent "
                    <<  packet->GetSize () << " bytes to "
                    << InetSocketAddress::ConvertFrom(m_peer).GetIpv4 ()
                    << " port " << InetSocketAddress::ConvertFrom (m_peer).GetPort ()
@@ -509,10 +509,19 @@ uint64_t m_countCfEndAck;
 uint64_t m_countDataNull;
 uint64_t m_countData;
 
+uint32_t nWifi = 3;
+
+// Time vector to hold the different timestamps
+//vector < Time > t1, t2, t3, t4;
+//vector < vector <Time> > t1(nWifi), t11(nWifi), t2(nWifi), t3(nWifi), t4(nWifi);
+
 void TxCallback (std::string context, Ptr<const Packet> p)
 {
   WifiMacHeader hdr;
   p->PeekHeader (hdr);
+
+  NS_LOG_UNCOND (hdr);
+  
   if (hdr.IsBeacon ())
     {
       m_countBeacon++;
@@ -535,6 +544,9 @@ void TxCallback (std::string context, Ptr<const Packet> p)
         {
           m_countCfPoll++;
         }
+
+     // t1.push_back(NanoSeconds(Simulator::Now()));
+
     }
   else if (hdr.IsCfEnd ())
     {
@@ -557,6 +569,8 @@ void TxCallback (std::string context, Ptr<const Packet> p)
         {
           m_countData++;
         }
+
+     // t3.push_back(NanoSeconds(Simulator::Now()));
     }
 
 
@@ -597,7 +611,7 @@ void RxCallback (std::string context, Ptr<const Packet> p)
 int
 main (int argc, char *argv[])
 {
-  uint32_t nWifi = 5;
+  
   bool enablePcap = true;
   bool enablePcf = true;
   bool withData = true;
@@ -610,8 +624,8 @@ main (int argc, char *argv[])
   cmd.AddValue ("nWifi", "Number of wifi STA devices", nWifi);
   cmd.AddValue ("enablePcf", "Enable/disable PCF mode", enablePcf);
   cmd.AddValue ("withData", "Enable/disable UDP data packets generation", withData);
-  cmd.AddValue ("trafficDirection", "Data traffic direction (if withData is set to 1):" 
-                "upstream (all STAs -> AP) or downstream (AP -> all STAs)", trafficDirection);
+  cmd.AddValue ("trafficDirection", "Data traffic direction (if withData is set to 1):\
+                upstream (all STAs -> AP) or downstream (AP -> all STAs)", trafficDirection);
 
   cmd.AddValue ("cfpMaxDuration", "CFP max duration in microseconds", cfpMaxDurationUs);
   cmd.AddValue ("simulationTime", "Simulation time in seconds", simulationTime);
@@ -643,9 +657,11 @@ main (int argc, char *argv[])
   phy.SetChannel (channel.Create ());
 
   WifiHelper wifi;
+  //wifi.SetStandard(WIFI_PHY_STANDARD_80211ac);
+
   WifiMacHelper mac;
   
-  Ssid ssid = Ssid ("wifi-pcf");
+  Ssid ssid = Ssid ("wptp-pcf");
   
   wifi.SetRemoteStationManager ("ns3::ConstantRateWifiManager", "DataMode", StringValue ("OfdmRate54Mbps"), "ControlMode", StringValue ("OfdmRate24Mbps"));
 
